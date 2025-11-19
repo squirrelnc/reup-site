@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>REUP Apparel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #f7f7f7;
+      --text: #111111;
+      --muted: #666666;
+      --accent: #111111;
+      --border: #e3e3e3;
+      --card-bg: #ffffff;
+      --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    /* NAVBAR */
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .nav-left {
+      font-weight: 800;
+      font-size: 24px;
+      letter-spacing: 0.14em;
+    }
+
+    .nav-center {
+      display: flex;
+      gap: 24px;
+      font-size: 14px;
+      text-transform: uppercase;
+    }
+
+    .nav-center a {
+      color: var(--muted);
+    }
+
+    .nav-center a:hover {
+      color: var(--text);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 14px;
+    }
+
+    .nav-icon {
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .nav-account {
+      font-size: 13px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .nav-account:hover {
+      color: var(--text);
+    }
+
+    /* Cart preview */
+
+    .cart-wrapper {
+      position: relative;
+    }
+
+    .cart-preview {
+      position: absolute;
+      top: 130%;
+      right: 0;
+      width: 260px;
+      background: #ffffff;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      box-shadow: 0 14px 45px rgba(0,0,0,0.18);
+      padding: 14px 16px;
+      font-size: 13px;
+      display: none;
+    }
+
+    .cart-wrapper:hover .cart-preview {
+      display: block;
+    }
+
+    .cart-preview-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 12px;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      margin: 4px 0;
+    }
+
+    .cart-checkout {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+      text-align: right;
+    }
+
+    .btn-checkout {
+      margin-top: 10px;
+      background: #111111;
+      color: #ffffff;
+      border-radius: 999px;
+      padding: 8px 18px;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .btn-checkout:hover {
+      background: #000000;
+    }
+
+    /* LAYOUT */
+
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 20px 40px;
+    }
+
+    .section {
+      padding: 40px 0;
+    }
+
+    .section + .section {
+      border-top: 1px solid var(--border);
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    /* HERO */
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      gap: 32px;
+      align-items: center;
+      padding-top: 28px;
+    }
+
+    .hero-heading {
+      font-size: 44px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .hero-sub {
+      font-size: 16px;
+      margin-bottom: 26px;
+      color: var(--muted);
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent);
+      color: #ffffff;
+      border-radius: 999px;
+      padding: 12px 28px;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      background: #000000;
+    }
+
+    .hero-image {
+      border-radius: 18px;
+      overflow: hidden;
+      min-height: 260px;
+      background: radial-gradient(circle at top left, #e8e0d4, #c8b597, #514635);
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
+      padding: 24px;
+      color: #ffffff;
+      position: relative;
+    }
+
+    .hero-image::after {
+      content: "REUP HOODIE";
+      position: absolute;
+      bottom: 14px;
+      left: 18px;
+      font-size: 13px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.7;
+    }
+
+    /* PRODUCTS */
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .product-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 14px 14px 16px;
+      border: 1px solid var(--border);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.06);
+    }
+
+    .product-image {
+      border-radius: 12px;
+      background: #f0f0f0;
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #333333;
+      margin-bottom: 10px;
+    }
+
+    .product-name {
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .product-price {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* IMPACT */
+
+    .impact-text {
+      max-width: 620px;
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .impact-sub {
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 680px;
+    }
+
+    /* MEDIA QUERIES */
+
+    @media (max-width: 900px) {
+      .nav-inner {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .nav-center {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+      }
+      .hero {
+        grid-template-columns: 1fr;
+      }
+      .hero-image {
+        min-height: 220px;
+      }
+      .products-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 600px) {
+      .nav-center {
+        display: none; /* keep top very simple on mobile */
+      }
+      .products-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .hero-heading {
+        font-size: 32px;
+      }
+      .page {
+        padding: 0 14px 32px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="nav">
+    <div class="nav-inner">
+      <div class="nav-left">REUP</div>
+
+      <nav class="nav-center">
+        <a href="#shop">Shop</a>
+        <a href="#impact">Impact</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <div class="nav-right">
+        <span class="nav-icon">🔍</span>
+        <span class="nav-account">Login / Account</span>
+
+        <div class="cart-wrapper">
+          <span class="nav-icon">🛒</span>
+          <div class="cart-preview">
+            <div class="cart-preview-header">
+              <span>Cart</span>
+              <span>3 items</span>
+            </div>
+            <div class="cart-item">
+              <span>Logo T-Shirt</span>
+              <span>$24.00</span>
+            </div>
+            <div class="cart-item">
+              <span>REUP Hoodie</span>
+              <span>$54.00</span>
+            </div>
+            <div class="cart-item">
+              <span>Baseball Cap</span>
+              <span>$20.00</span>
+            </div>
+            <div class="cart-checkout">
+              <button class="btn-checkout">Checkout</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <!-- HERO -->
+    <section class="section hero" id="top">
+      <div>
+        <h1 class="hero-heading">
+          SUMMER DROP
+        </h1>
+        <p class="hero-sub">
+          Latest arrivals for the new season. Minimal designs, maximum impact.
+        </p>
+        <button class="btn-primary">SHOP NOW</button>
+      </div>
+
+      <div class="hero-image">
+        <!-- Replace with real image if you want:
+        <img src="hero.jpg" alt="REUP Summer Drop" />
+        -->
+      </div>
+    </section>
+
+    <!-- FEATURED PRODUCTS -->
+    <section class="section" id="shop">
+      <h2 class="section-title">Featured Products</h2>
+
+      <div class="products-grid">
+        <a href="#" class="product-card">
+          <div class="product-image">T-SHIRT</div>
+          <div class="product-name">Logo T-Shirt</div>
+          <div class="product-price">$24.00</div>
+        </a>
+
+        <a href="#" class="product-card">
+          <div class="product-image">HOODIE</div>
+          <div class="product-name">REUP Hoodie</div>
+          <div class="product-price">$54.00</div>
+        </a>
+
+        <a href="#" class="product-card">
+          <div class="product-image">CREW</div>
+          <div class="product-name">Crewneck Sweatshirt</div>
+          <div class="product-price">$48.00</div>
+        </a>
+
+        <a href="#" class="product-card">
+          <div class="product-image">CAP</div>
+          <div class="product-name">Baseball Cap</div>
+          <div class="product-price">$20.00</div>
+        </a>
+      </div>
+    </section>
+
+    <!-- OUR IMPACT -->
+    <section class="section" id="impact">
+      <h2 class="section-title">Our Impact</h2>
+      <p class="impact-text">
+        We are committed to creating sustainable and ethical fashion that makes a real difference.
+      </p>
+      <p class="impact-sub">
+        Every purchase helps fund REUP initiatives focused on community, restoration, and second chances.
+        We believe in clothing that feels good and does good.
+      </p>
+    </section>
+
+    <!-- BEST SELLERS -->
+    <section class="section" id="about">
+      <h2 class="section-title">Best Sellers</h2>
+
+      <div class="products-grid">
+        <a href="#" class="product-card">
+          <div class="product-image">TEE</div>
+          <div class="product-name">REUP Classic Tee</div>
+          <div class="product-price">$24.00</div>
+        </a>
+
+        <a href="#" class="product-card">
+          <div class="product-image">HOODIE</div>
+          <div class="product-name">Sand Hoodie</div>
+          <div class="product-price">$58.00</div>
+        </a>
+
+        <a href="#" class="product-card">
+          <div class="product-image">CREW</div>
+          <div class="product-name">Midnight Crewneck</div>
+          <div class="product-price">$52.00</div>
+        </a>
+
+        <a href="#" class="product-card">
+          <div class="product-image">TEE</div>
+          <div class="product-name">Minimal Logo Tee</div>
+          <div class="product-price">$26.00</div>
+        </a>
+      </div>
+    </section>
+
+    <!-- CONTACT FOOTER SECTION -->
+    <section class="section" id="contact">
+      <h2 class="section-title">Contact</h2>
+      <p class="impact-text">
+        Questions about an order, wholesale, or partnership opportunities?
+      </p>
+      <p class="impact-sub">
+        Email us at <a href="mailto:info@reupapparel.com">info@reupapparel.com</a>.
+      </p>
+    </section>
+  </main>
+
+</body>
+</html>
